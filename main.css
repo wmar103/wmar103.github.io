@@ -4,7 +4,8 @@ body {
 }
 
 p {
-  color: #d2cbc0
+  color: #d2cbc0;
+  font-size: 16px
 }
 
 h1 {
