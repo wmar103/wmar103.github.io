@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.2.0/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v1.2.0/leaflet.js"></script>
     <title>Wmar103 Geog 774</title>
   </head>
   <body>
@@ -36,8 +38,43 @@
 
     <div class="container">
       <h1 class="text-center">Welcome to wmar103's Website</h1>
-      <p>Hello World.</p>
-    </div>
+      <p>Pre-lab:</p>
+
+      <div class="container">
+        <div id="mapid" style="width: 100%; height: 900px;"></div>
+        <script type="text/javascript" src="kaimanawas.js"></script>
+
+        	<script>
+
+        		var mymap = L.map('mapid').setView([-39.093, 175.982], 10);
+
+        		L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/{type}/{mapID}/hybrid.day/{z}/{x}/{y}/{size}/{format}?app_id={app_id}&app_code={app_code}&lg={language}', {
+        			attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
+        			subdomains: '1234',
+        			mapID: 'newest',
+        			app_id: 'E5GorCFmYn10IZFSxyZB',
+        			app_code: 'rpXhBIATvLEUwhJAGWgKnQ',
+        			base: 'aerial',
+        			maxZoom: 20,
+        			type: 'maptile',
+        			language: 'eng',
+        			format: 'png8',
+        			size: '256'
+        		}).addTo(mymap);
+
+        		L.geoJson([kaimanawas], {
+        			weight: 2,
+        			color: '#ffffff',
+        			fillColor: '#d2cbc0',
+        			fillOpacity: 0.6
+        		}).addTo(mymap);
+
+        		L.marker([-39.093, 175.982]).addTo(mymap)
+        			.bindPopup("<b>Kaimanawa Forest Park</b><br /><i>Source: Land Information New Zealand (LINZ) (2016). LINZ Data Service - Protected Areas 2017. Retrieved from https://data.linz.govt.nz</i>").openPopup();
+
+        	</script>
+      </div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
