@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../main.css">
     <title>Lab 3</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.css' rel='stylesheet' />
   </head>
   <body>
     <div class="navbar navbar-custom navbar-static-top">
@@ -38,6 +40,220 @@
     <div class="container">
       <h1>Lab 3</h1>
       <p>[Insert Lab 3].</p>
+
+    </div>
+      <div class="container">
+        <div class="row">
+
+          <div class="col-sm-6" id='map1'style='width: 50%; height: 700px;'>
+            <script>
+              mapboxgl.accessToken = 'pk.eyJ1Ijoid21hcjEwMyIsImEiOiJjajY4emJoZmowazBpMndxcjFtZjNzcWc5In0.DP_eav3mOX6CgiZu2UvO-g';
+                var map_1 = new mapboxgl.Map({
+                  container: 'map1',
+                  style: 'mapbox://styles/wmar103/cj6pqhbll2uas2ro10o01s7a9',
+                  center:[172.8,-41.3],
+                  zoom: 4.7,
+                });
+            </script>
+          </div>
+
+          <div class="col-sm-6" id='map2'style='width: 50%; height: 700px;'>
+            <script>
+              mapboxgl.accessToken = 'pk.eyJ1Ijoid21hcjEwMyIsImEiOiJjajY4emJoZmowazBpMndxcjFtZjNzcWc5In0.DP_eav3mOX6CgiZu2UvO-g';
+                var map2 = new mapboxgl.Map({
+                  container: 'map2',
+                  style: 'mapbox://styles/wmar103/cj6zrow4h1nxy2slnhw7bfsvz',
+                  center:[172.8,-41.3],
+                  zoom: 4.7,
+                });
+
+                map2.on('load', function () {
+                  map2.addSource('tracks',{
+                    type:'vector',
+                    url:'mapbox://wmar103.cj6prafo301zq2qqfxrsk60id-2t54j'
+                    });
+                map2.addLayer({
+                  "id":"tracks",
+                  "type":"line",
+                  "source":"tracks",
+                  "source-layer":"greatwalksplan",
+                  "layout":{
+                    "visibility":"visible",
+                    "line-join":"round",
+                    "line-cap":"round"
+                  },
+                  "paint":{
+                    "line-color":"#ff0000",
+                    "line-width":3
+                  }
+                });
+                map2.addSource("markers",{
+                  "type": "geojson",
+                  "data": {
+                    "type": "FeatureCollection",
+                    "features": [
+                    {
+                      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Heaphy Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          172.177734375,
+          -40.92181441237851
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Abel Tasman Coast Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          173.0291748046875,
+          -40.89690577586
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Tongariro Northern Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          175.616455078125,
+          -39.172658670429946
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Lake Waikaremoana"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          177.022705078125,
+          -38.78834535508562
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Routeburn Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          168.1622314453125,
+          -44.774036485915225
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Milford Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          167.79968261718747,
+          -44.805224396222535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Kepler Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          167.5469970703125,
+          -45.417732423704614
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "title": "Rakiura Track"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          168.0633544921875,
+          -46.86770273172813
+        ]
+      }
+    }
+  ]
+}
+});
+map2.addLayer({
+      "id":"markers",
+      "type":"symbol",
+      "source":"markers",
+      "layout":{
+        "icon-image":"triangle-15",
+        "text-field": "{title}",
+        "text-font":["Open Sans Condensed Bold","Arial Unicode MS Regular"],
+        "text-offset":[0,0.4],
+        "text-size":18,
+        "text-anchor":"top",
+        "text-allow-overlap": true
+
+
+      },
+      "paint": {
+        "text-color":"#ffffff",
+        "text-halo-color":"#ffffff",
+        "text-halo-width": 0,
+        "text-halo-blur": 1
+      }
+    });
+
+                map2.setLayerZoomRange('tracks',7,0);
+                map2.setLayerZoomRange('markers', 0, 22);
+              });
+
+            </script>
+          </div>
+
+      </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
