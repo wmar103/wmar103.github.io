@@ -39,7 +39,7 @@
 
     <div class="container">
       <h1>Lab 3</h1>
-      <p>Two maps showing Great Walks in New Zealand.</p>
+      <p>Two maps showing Great Walks in New Zealand</p>
 
     </div>
       <div class="container">
@@ -246,6 +246,19 @@ map2.addLayer({
       }
     });
 
+map2.on('mousemove',function(e){
+    var features = map2.queryRenderedFeatures(e.point, {layers:['markers']
+  });
+
+map2.getCanvas().style.cursor = features.length ? 'pointer': '';
+  });
+
+map2.on('click',function(e){
+  var features = map2.queryRenderedFeatures(e.point, {layers: ['markers']});
+  if (features.length){
+    map2.flyTo({center:features[0].geometry.coordinates,zoom:9});
+    }
+  });
                 map2.setLayerZoomRange('tracks',7,0);
                 map2.setLayerZoomRange('markers', 0, 22);
               });
