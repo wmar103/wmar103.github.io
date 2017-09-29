@@ -119,6 +119,9 @@
             }
           }
 
+          info.update(layer.feature.properties);
+      }
+
           function resetHighlight(e){
             geojson.resetStyle(e.target);
           }
