@@ -5,7 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.2.0/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v1.2.0/leaflet.js"></script>
     <title>Lab 4</title>
+
+    <style>
+      .info{
+        padding: 10px;
+        font: 0px arial, sans-serif;
+        background: #877348;
+        background: rgba(135,115,72,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        border-color: rgba(51,44,35,0.8);
+        border-width: thick;
+        border-style: solid;
+      }
+    </style>
   </head>
   <body>
     <div class="navbar navbar-custom navbar-static-top">
@@ -38,8 +54,129 @@
     <div class="container">
       <h1>Lab 4</h1>
       <p>[Insert Lab 4].</p>
-    </div>
 
+
+      <div id="map" style="width: 100%; height: 800px;"></div>
+      <script type="text/javascript" src="hexfires2.js"></script>
+
+      <script>
+
+        var map = L.map('map').setView([-36.89248, 174.83236], 10);
+
+        L.tileLayer('http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/{type}/{mapID}/hybrid.day/{z}/{x}/{y}/{size}/{format}?app_id={app_id}&app_code={app_code}&lg={language}', {
+          attribution: 'Basemap &copy; 1987-2014 <a href="http://developer.here.com">HERE</a> | Fire incidence data &copy; <a href="https://fireandemergency.nz/">2016 New Zealand Fire Service</a>',
+          subdomains: '1234',
+          mapID: 'newest',
+          app_id: 'E5GorCFmYn10IZFSxyZB',
+          app_code: 'rpXhBIATvLEUwhJAGWgKnQ',
+          base: 'aerial',
+          maxZoom: 20,
+          type: 'maptile',
+          language: 'eng',
+          format: 'png8',
+          size: '256'
+        }).addTo(map);
+
+
+
+        function getColor(d){
+          return d > 64 ? '#b30000':
+                 d > 32 ? '#cf2a1d' :
+                 d > 16 ? '#e75338' :
+                 d > 8 ? '#f57a4e' :
+                 d > 4 ? '#fd9f67' :
+                 d > 2 ? '#fdc383' :
+                 d > 1 ? '#fedcac' :
+                          '#fcf0d9';
+        }
+
+        function style(feature){
+          return{
+            fillColor: getColor(feature.properties.hexfires),
+            weight: 1,
+            opacity: 0.5,
+            color: 'black',
+            dashArray: '0',
+            fillOpacity: 0.8
+      };
+    }
+
+
+      var geojson;
+          function highlightFeature(e){
+            var layer = e.target;
+
+            layer.setStyle({
+              weight: 5,
+              color: '#000000',
+              dashArray: '',
+              fillOpacity: 1
+            });
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+              layer.bringToFront();
+            }
+          }
+
+          function resetHighlight(e){
+            geojson.resetStyle(e.target);
+          }
+
+          L.geoJson(hexfires2, {style: style}).addTo(map);
+
+          function onEachFeature(feature, layer){
+            layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight,
+            });
+          }
+      geojson = L.geoJson(hexfires2, {
+        style: style,
+        onEachFeature: onEachFeature
+      }).addTo(map);
+
+      var info = L.control();
+
+    info.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'info');
+      this.update();
+      return this._div;
+    };
+
+    info.update = function (props) {
+      this._div.innerHTML = '<h4>Number of structural fires reported:</h4>' +  (props ?
+          '<b>' + props.hexfires2 + '</b><br />' + props.hexfires + ' fires '
+        : '<p>(Place mouse over a hexbin)</p>');
+    };
+
+    info.addTo(map);
+
+    var legend = L.control({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+           grades = [0, 1, 2, 4, 8, 16, 32, 64],
+           key_labels = ["0-1", "2-4", "4-8", "8-16", "32-64", "64+"],
+           labels = ["<h4>Structural fires, 2013-16:</h4>"],
+           from, to;
+
+            for (var i = 0; i < grades.length; i++) {
+              from = grades[i];
+              to = grades[i + 1];
+
+            labels.push(
+              '<i style="background:' + getColor(from + 1) + '"></i> ' +
+              key_labels[i]);
+           }
+
+           div.innerHTML = labels.join('<br>');
+           return div;
+         };
+
+    legend.addTo(map);
+
+      </script>
+</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>
