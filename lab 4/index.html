@@ -80,13 +80,14 @@
 
 
         function getColor(d){
-          return d > 64 ? '#b30000':
-                 d > 32 ? '#cf2a1d' :
-                 d > 16 ? '#e75338' :
-                 d > 8 ? '#f57a4e' :
-                 d > 4 ? '#fd9f67' :
-                 d > 2 ? '#fdc383' :
-                 d > 1 ? '#fedcac' :
+          return d > 64 ? '#790000':
+                 d > 32 ? '#b30000':
+                 d > 16 ? '#cf2a1d' :
+                 d > 8 ? '#e75338' :
+                 d > 4 ? '#f57a4e' :
+                 d > 2 ? '#fd9f67' :
+                 d > 1 ? '#fdc383' :
+                 d > 0 ? '#fedcac' :
                           '#fcf0d9';
         }
 
@@ -122,7 +123,6 @@
             geojson.resetStyle(e.target);
           }
 
-          L.geoJson(hexfires2, {style: style}).addTo(map);
 
           function onEachFeature(feature, layer){
             layer.on({
@@ -130,6 +130,7 @@
               mouseout: resetHighlight,
             });
           }
+
       geojson = L.geoJson(hexfires2, {
         style: style,
         onEachFeature: onEachFeature
