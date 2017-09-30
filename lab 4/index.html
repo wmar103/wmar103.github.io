@@ -17,10 +17,26 @@
         background: rgba(135,115,72,0.8);
         box-shadow: 0 0 15px rgba(0,0,0,0.2);
         border-radius: 15px;
-        border-color: rgba(51,44,35,0.8);
+        border-color: rgba(51,44,35,0.7);
         border-width: thick;
         border-style: solid;
       }
+      .info h4 {
+      margin: 0 0 5px;
+      color: #d2cbc0;
+    }
+      .legend{
+      text-align:left;
+      line-height: 18px;
+      color: #d2cbc0;
+    }
+    .legend i {
+      width:15px;
+      height:15px;
+      float:left;
+      margin-right:8px;
+      opacity:0.7;
+    }
     </style>
   </head>
   <body>
@@ -123,6 +139,7 @@
 
           function resetHighlight(e){
             geojson.resetStyle(e.target);
+            info.update();
           }
 
 
@@ -148,8 +165,8 @@
 
     info.update = function (props) {
       this._div.innerHTML = '<h4>Number of structural fires reported:</h4>' +  (props ?
-          '<b>' + props.hexfires2 + '</b><br />' + props.hexfires + ' fires '
-        : '<p>(Place mouse over a hexbin)</p>');
+          props.hexfires + ' fires '
+        : '<p>(Place cursor over a hexbin)</p>');
     };
 
     info.addTo(map);
