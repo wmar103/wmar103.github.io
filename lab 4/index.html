@@ -103,7 +103,7 @@
                  d > 10 ? '#fd9f67' :
                  d > 5 ? '#fdc383' :
                  d > 0 ? '#fedcac' :
-                          '#fcf0d9';
+                          '#ffffff';
         }
 
         function style(feature){
@@ -113,7 +113,7 @@
             opacity: 0.5,
             color: 'black',
             dashArray: '0',
-            fillOpacity: 0.8
+            fillOpacity: 0.7
       };
     }
 
@@ -175,8 +175,8 @@
 
       legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend'),
-           grades = [0, 5, 10, 20, 30, 40, 100],
-           key_labels = ["0-5", "6-10", "11-20", '21-30', '31-40', '41-100', '>100'],
+           grades = [0, 5, 10, 20, 30, 40, 100,],
+           key_labels = ["1-5", "6-10", "11-20", '21-30', '31-40', '41-100', '>100'],
            labels = ["<h4>Structural fires, 2013-16:</h4>"],
            from, to;
 
