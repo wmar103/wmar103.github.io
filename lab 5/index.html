@@ -6,6 +6,29 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../main.css">
     <title>Lab 5</title>
+    <style>
+      #map {
+        height: 100%;
+      }
+      #legend {
+        position: relative;
+        width: 400px;
+        height: 35px;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+      #legendGradient {
+        width:100%;
+        height:15px;
+        border:1px solid black;
+      }
+  	  #legendText {
+    		margin-left: 0px;
+    		margin-right:0px;
+    		align-content: center;
+        color: #d2cbc0;
+  		}
+    </style>
   </head>
   <body>
     <div class="navbar navbar-custom navbar-static-top">
@@ -37,8 +60,82 @@
 
     <div class="container">
       <h1>Lab 5</h1>
-      <p>[Insert Lab 5].</p>
+      <p>Last 50 earthquakes recorded in New Zealand, displayed on Google Maps API.</p>
+
+    <div id="map" class="container" style="width:100%; height:800px;"></div>
+    <div id="legend"><div id="legendGradient" style="background: -webkit-linear-gradient(left, rgb(124,255,0),  rgb(255,255,0), rgba(255, 0, 0, 0.8));"></div>
+		<div id="legendText" align="left">0.0<span style="white-space:pre">                                  <b>Magnitude</b>                                  </span><span style="white-space:pre">4.0+</span></div>
+	</div>
+        <p>Earthquake data sourced from <a href="https://wfs.geonet.org.nz/">GeoNet Web Feature Service</a>.</p>
     </div>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -41.2, lng: -187.2},
+          zoom: 6
+        });
+        map.setMapTypeId('satellite');
+        map.data.loadGeoJson('http://wfs.geonet.org.nz/geonet/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geonet:quake_search_v1&maxFeatures=50&outputFormat=json');
+
+        map.data.setStyle(styleFeature);
+      function styleFeature(feature) {
+        var low = [151, 83, 34];
+        var high = [5, 69, 54];
+        var minmagnitude = 0.0;
+        var maxmagnitude = 4.0;
+
+        var fraction = (Math.min(feature.getProperty('magnitude'), maxmagnitude) - minmagnitude) /
+            (maxmagnitude - minmagnitude);
+
+        var color = interpolateHsl(low, high, fraction);
+
+        return {
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            strokeWeight: 0.5,
+            strokeColor: '#fff',
+            fillColor: color,
+            fillOpacity: 2 / feature.getProperty('magnitude'),
+            scale: Math.pow(feature.getProperty('magnitude'), 2)
+          },
+          zIndex: Math.floor(feature.getProperty('magnitude'))
+        };
+      }
+      }
+
+      function interpolateHsl(lowHsl, highHsl, fraction) {
+        var color = [];
+        for (var i = 0; i < 3; i++) {
+          color[i] = (highHsl[i] - lowHsl[i]) * fraction + lowHsl[i];
+        }
+
+        return 'hsl(' + color[0] + ',' + color[1] + '%,' + color[2] + '%)';
+      }
+
+      var mapStyle = [{
+        'featureType': 'all',
+        'elementType': 'all',
+        'stylers': [{'visibility': 'off'}]
+      }, {
+        'featureType': 'landscape',
+        'elementType': 'geometry',
+        'stylers': [{'visibility': 'on'}, {'color': '#fcfcfc'}]
+      }, {
+        'featureType': 'water',
+        'elementType': 'labels',
+        'stylers': [{'visibility': 'off'}]
+      }, {
+        'featureType': 'water',
+        'elementType': 'geometry',
+        'stylers': [{'visibility': 'on'}, {'hue': '#5f94ff'}, {'lightness': 60}]
+      }];
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZUMWFbLAZpQK2kaQK88pRO4ptUgAfP2o&callback=initMap">
+    </script>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
