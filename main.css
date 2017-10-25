@@ -10,11 +10,16 @@ p {
 
 #datasource {
   color: #d2cbc0;
-  font-size: 12px
+  font-size: 13px
 }
 
 h1 {
   color: #d2cbc0;
+}
+
+h2 {
+  color: #332c23;
+  font-size: 12px
 }
 
 
