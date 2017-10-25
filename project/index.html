@@ -121,8 +121,6 @@
             <li><a href="../lab 4/">Lab 4</a></li>
             <li><a href="../lab 5/">Lab 5</a></li>
             <li class="active"><a href="../project/">Project</a></li>
-            <li><a href="../project - test/">TEST</a></li>
-            <li><a href="../project test 2/">TEST 2</a></li>
           </ul>
         </div>
       </div>
@@ -130,15 +128,20 @@
 
     <div class="container">
       <h1>Final Project - "The NZ Hunter's Map"</h1>
-      <p>The map below displays a couple of popular hunting areas in North Island of New Zealand. Click one of the buttons below the legend to zoom in on a hunting area. Slope aspect information will be shown for the hunting block. Slope aspect displays what direction each slope is facing (refer to the legend), allowing you to make an educated guess as to where game may be residing depending on the weather conditions. To show more details of a particular hunting block, hover over the little tree symbol. The MetService Weather Widget is also shown to help you better plan your trip (you may need to "load unsafe scripts" via the URL bar to view this). Click on the widget to go to the MetService website to see a more detailed forecast. After zooming to a hunting block, the buttons on the map allow you to turn off/on some layers. You can hover over a campsite or hut to reveal its name. Clicking on the map will also allow you to draw a path or line, the length of which will be displayed in the top left of the map. This is a handy tool for working out the distance you may need to walk or shoot.
-      </br></br>At any time, click the "Reset Extent" button to return to the map to the starting extent.</br></br></p>
+      <p>The map below shows two popular hunting blocks in North Island of New Zealand. Click one of the buttons below the legend to zoom in on a hunting area. Upon zooming in, slope aspect information for the block will appear. Slope aspect displays the orientation of each slope face (refer to the legend), allowing you to make an educated guess as to where game may be residing depending on the weather conditions. To show more details of a particular hunting block, hover over the little tree symbol.
+        <br><br>After zooming to a hunting block, the buttons on the map allow you to turn off/on some layers. You can hover over a campsite or hut to reveal its name.
+        <br><br>Clicking on the map will allow you to draw a path or line, the length of which will be displayed in the top left of the map. To undo a point, click on the point you wish to remove. This is a handy tool for working out the distance you may need to walk or shoot.
+        <br><br>Use the MetService Weather Widgets to help you better plan your trip (you may need to "load unsafe scripts" via the URL bar to view this). Click on the widget to visit the MetService website for a more detailed forecast.
+        <br><br>At any time, click the "Reset Extent" button to return to the map to the starting extent.</p>
+        <p id="datasource"><i>Digital Elevation Model data used for creating the slope aspect layers were retrieved from <a href="https://data.linz.govt.nz/">LINZ Data Service, 2017.</a><br>Department of Conservation (DOC) Data retrieved from <a href="https://koordinates.com/">Koordinates, 2017.</a></i></p>
+
 
     </div>
 
       <div class="container">
 
 
-          <div class="col-sm-6" id='map'style='width: 70%; height: 700px;'>
+          <div class="col-sm-6" id='map'style='width: 70%; height: 710px;'>
 
 
           <style type='text/css'>
@@ -199,9 +202,11 @@
                 var map = new mapboxgl.Map({
                   container: 'map',
                   style: 'mapbox://styles/wmar103/cj90ocks7j0sg2rnzserdjfd1',
-                  center:[175.5,-38.5],
-                  zoom: 5.5,
+                  center:[175.7,-38.5],
+                  zoom: 5.7,
                 });
+
+
 
                 map.on('mousemove', function (e) {
                     document.getElementById('info').innerHTML =
@@ -699,8 +704,8 @@ map.on('mouseleave', 'DOC Campsites', function() {
                   {
                     "type": "Feature",
                     "properties": {
-                        "title": "Kaimanawa Forest Park Hunting Block",
-                        "description": "<strong>Kaimanawa Forest Park Hunting Block</strong><h2><a href=\"http://www.doc.govt.nz/parks-and-recreation/things-to-do/hunting/where-to-hunt/central-north-island/turangi-taupo-hunting/where-to-hunt/kaimanawa-forest-park-hunting/\" target=\"_blank\" title=\"Opens in a new window\">Kaimanawa Forest Park Hunting Block</a> contains lots of game. Permits can be obtained <a href=\"https://huntingpermits.doc.govt.nz/huntingpermits/start\" target=\"_blank\" title=\"Opens in a new window\">here.</a></h2>",
+                        "title": "Kaimanawa Forest Park",
+                        "description": "<strong>Kaimanawa Forest Park</strong><h2><a href=\"http://www.doc.govt.nz/parks-and-recreation/things-to-do/hunting/where-to-hunt/central-north-island/turangi-taupo-hunting/where-to-hunt/kaimanawa-forest-park-hunting/\" target=\"_blank\" title=\"Opens in a new window\">Kaimanawa Forest Park</a> is home to the only large wild herd of sika deer in the southern hemisphere, as well as red deer and pigs. This is one of the most popular hunting areas in New Zealand. Permits can be obtained <a href=\"https://huntingpermits.doc.govt.nz/huntingpermits/start\" target=\"_blank\" title=\"Opens in a new window\">here.</a></h2>",
                         "icon": ""
                     },
                     "geometry": {
@@ -712,7 +717,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
                   "type": "Feature",
                   "properties": {
                       "title": "Kaimai Mamaku Conservation Park",
-                      "description": "<strong>Kaimai Mamaku Conservation Park</strong><h2><a href=\"http://www.doc.govt.nz/parks-and-recreation/things-to-do/hunting/where-to-hunt/central-north-island/turangi-taupo-hunting/where-to-hunt/kaimanawa-forest-park-hunting/\" target=\"_blank\" title=\"Opens in a new window\">Kaimanawa Forest Park Hunting Block</a> contains lots of game. Permits can be obtained <a href=\"https://huntingpermits.doc.govt.nz/huntingpermits/start\" target=\"_blank\" title=\"Opens in a new window\">here.</a></h2>",
+                      "description": "<strong>Kaimai Mamaku Conservation Park</strong><h2><a href=\"http://www.doc.govt.nz/parks-and-recreation/things-to-do/hunting/where-to-hunt/bay-of-plenty/tauranga-area-hunting/where-to-hunt/kaimai-mamaku-forest-park/?region=bayofplenty&activity=hunting#activitypanel\" target=\"_blank\" title=\"Opens in a new window\">Kaimai Mamaku Conservation Park</a> is a popular hunting area in the Bay of Plenty, where hunters can find red deer, pigs and goats. Permits can be obtained <a href=\"https://huntingpermits.doc.govt.nz/huntingpermits/start\" target=\"_blank\" title=\"Opens in a new window\">here.</a></h2>",
                       "icon": ""
                   },
                   "geometry": {
@@ -740,7 +745,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
                   {
                     "type": "Feature",
                     "properties": {
-                        "title": "Kaimanawa Forest Park Hunting Block",
+                        "title": "Kaimanawa Forest Park",
                         "icon": ""
                     },
                     "geometry": {
@@ -776,7 +781,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
             "icon-image":"",
             "text-field": "{title}",
             "text-font":["Open Sans Condensed Bold","Arial Unicode MS Regular"],
-            "text-offset":[0,0.4],
+            "text-offset":[0,0.9],
             "text-size":14,
             "text-anchor":"top",
             "text-allow-overlap": true
@@ -842,17 +847,17 @@ map.on('mouseleave', 'DOC Campsites', function() {
           <div class='legend-title'>Slope Aspect</div>
           <div class='legend-scale'>
             <ul class='legend-labels'>
-              <li><span style='background:#FFF100;'></span>North</li>
-              <li><span style='background:#22AC38;'></span>North East</li>
-              <li><span style='background:#009E96;'></span>East</li>
-              <li><span style='background:#0086D1;'></span>South East</li><br/>
-              <li><span style='background:#1D2088;'></span>South</li>
-              <li><span style='background:#BE0081;'></span>South West</li>
-              <li><span style='background:#E5004F;'></span>West</li>
-              <li><span style='background:#EB6100;'></span>North West</li>
+              <li><span style='background:rgba(255, 241, 0, 0.6);'></span>North</li>
+              <li><span style='background:rgba(34, 172, 56, 0.6);'></span>North East</li>
+              <li><span style='background:rgba(0, 158, 150, 0.6);'></span>East</li>
+              <li><span style='background:rgba(0, 134, 209, 0.6);'></span>South East</li><br/>
+              <li><span style='background:rgba(29, 32, 136, 0.6);'></span>South</li>
+              <li><span style='background:rgba(190, 0, 129, 0.6);'></span>South West</li>
+              <li><span style='background:rgba(230, 0, 79, 0.6);'></span>West</li>
+              <li><span style='background:rgba(235, 97, 0, 0.6);'></span>North West</li>
             </ul>
           </div>
-          <div class='legend-source'>Source: <a href="#link to source">Name of source</a></div>
+          <div class='legend-source'></div>
           </div>
 <br>
 
@@ -867,8 +872,8 @@ map.on('mouseleave', 'DOC Campsites', function() {
       document.getElementById('reset_extent').addEventListener('click', function () {
 
       map.flyTo({
-        center:[175.5,-37.9],
-        zoom: 5.5,
+        center:[175.7,-38.5],
+        zoom: 5.7,
       });
       });
 
@@ -876,7 +881,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
 
       map.flyTo({
       center: [176.065,-39.1],
-      zoom: 9.8,
+      zoom: 9.2,
       });
       });
       document.getElementById('fly_kaimais').addEventListener('click', function () {
@@ -889,18 +894,32 @@ map.on('mouseleave', 'DOC Campsites', function() {
       </script>
           </div>
 <br>
-          <div id="metservice-widget">
-          <script language="JavaScript" type="text/javascript">
-          ifrm = document.createElement("IFRAME");
-          ifrm.setAttribute("src", "http://www.metservice.com/weather-widget/widget?params=blue|medium|portrait|days-3|classic&loc=Taupo&domain=" + document.location.hostname);
-          ifrm.style.width = 300+"px";
-          ifrm.style.height =199+"px";
-          ifrm.style.border = "0";
-          ifrm.setAttribute("allowtransparency", "true");
-          ifrm.setAttribute("id", "widget-iframe");
-          document.getElementById('metservice-widget').appendChild(ifrm);
-          </script>
-          </div>
+<div id="metservice-widget">
+<script language="JavaScript" type="text/javascript">
+ifrm = document.createElement("IFRAME");
+ifrm.setAttribute("src", "http://www.metservice.com/weather-widget/widget?params=blue|small|portrait|days-3|classic&loc=Tauranga&domain=" + document.location.hostname);
+ifrm.style.width = 300+"px";
+ifrm.style.height =168+"px";
+ifrm.style.border = "0";
+ifrm.setAttribute("allowtransparency", "true");
+ifrm.setAttribute("id", "widget-iframe");
+document.getElementById('metservice-widget').appendChild(ifrm);
+</script>
+</div>
+<div id="metservice-widget">
+<script language="JavaScript" type="text/javascript">
+ifrm = document.createElement("IFRAME");
+ifrm.setAttribute("src", "http://www.metservice.com/weather-widget/widget?params=blue|small|portrait|days-3|classic&loc=Taupo&domain=" + document.location.hostname);
+ifrm.style.width = 300+"px";
+ifrm.style.height =168+"px";
+ifrm.style.border = "0";
+ifrm.setAttribute("allowtransparency", "true");
+ifrm.setAttribute("id", "widget-iframe");
+document.getElementById('metservice-widget').appendChild(ifrm);
+</script>
+</div>
+
+
   </div>
 
 
@@ -936,12 +955,12 @@ map.on('mouseleave', 'DOC Campsites', function() {
               width: 65px;
               }
             .map_legend .legend-source {
-              font-size: 70%;
+              font-size: 85%;
               color: #d2cbc0;
               clear: both;
               }
             .map_legend a {
-              color: #d2cbc0;
+              color: #3e3eaa;
               }
 
               .map_buttons .buttons-title {
