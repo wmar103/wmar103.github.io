@@ -130,7 +130,7 @@
 
     <div class="container">
       <h1>Final Project - "The NZ Hunter's Map"</h1>
-      <p>The map below displays a popular hunting area in New Zealand. Click on a hunting area from the buttons on the right, and the map will take you to the selected area, which will show the slope aspect infomation. This data shows which direction each slope is facing (see legend to the right), allowing you to make an educated guess as to where game may be residing. The MetService Weather widget is also shown to help you better plan your trip. The buttons on the map allow you to turn off/on some layers. Hover over a campsite or hut to reviel its name. Clicking on the map will also allow you to draw a path or line, the length of which will be displayed in the top left of the map. This is a handy tool for working out the distance you may need to walk or shoot.
+      <p>The map below displays a couple of popular hunting areas in North Island of New Zealand. Click one of the buttons below the legend to zoom in on a hunting area. Slope aspect information will be shown for the hunting block. Slope aspect displays what direction each slope is facing (refer to the legend), allowing you to make an educated guess as to where game may be residing depending on the weather conditions. To show more details of a particular hunting block, hover over the little tree symbol. The MetService Weather Widget is also shown to help you better plan your trip (you may need to "load unsafe scripts" via the URL bar to view this). Click on the widget to go to the MetService website to see a more detailed forecast. After zooming to a hunting block, the buttons on the map allow you to turn off/on some layers. You can hover over a campsite or hut to reveal its name. Clicking on the map will also allow you to draw a path or line, the length of which will be displayed in the top left of the map. This is a handy tool for working out the distance you may need to walk or shoot.
       </br></br>At any time, click the "Reset Extent" button to return to the map to the starting extent.</br></br></p>
 
     </div>
@@ -199,15 +199,12 @@
                 var map = new mapboxgl.Map({
                   container: 'map',
                   style: 'mapbox://styles/wmar103/cj90ocks7j0sg2rnzserdjfd1',
-                  center:[175.5,-37.9],
+                  center:[175.5,-38.5],
                   zoom: 5.5,
                 });
 
                 map.on('mousemove', function (e) {
                     document.getElementById('info').innerHTML =
-                        // e.point is the x, y coordinates of the mousemove event relative
-                        // to the top-left corner of the map
-                        JSON.stringify(e.point) +
                         // e.lngLat is the longitude, latitude geographical position of the event
                         JSON.stringify(e.lngLat);
                 });
@@ -323,13 +320,13 @@
                 map.on('load', function () {
                   map.addSource('DOC Tracks',{
                     type:'vector',
-                    url:'mapbox://wmar103.cj951s8cx1j9r35qba1c5ype4-8ey2i'
+                    url:'mapbox://wmar103.cj96vvug100n432n36uagih5p-6yb6t'
                     });
                 map.addLayer({
                   "id":"DOC Tracks",
                   "type":"line",
                   "source":"DOC Tracks",
-                  "source-layer":"kai-doc-tracks",
+                  "source-layer":"hunting_doc_tracks",
                   "layout":{
                     "visibility":"visible",
                     "line-join":"round",
@@ -838,18 +835,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
           </div>
 
           <div class="col-sm-6" id="legend"style='width: 30%; height: 700px;'>
-            <div id="metservice-widget">
-  <script language="JavaScript" type="text/javascript">
-  ifrm = document.createElement("IFRAME");
-  ifrm.setAttribute("src", "http://www.metservice.com/weather-widget/widget?params=blue|medium|portrait|days-3|classic&loc=Taupo&domain=" + document.location.hostname);
-  ifrm.style.width = 300+"px";
-  ifrm.style.height =199+"px";
-  ifrm.style.border = "0";
-  ifrm.setAttribute("allowtransparency", "true");
-  ifrm.setAttribute("id", "widget-iframe");
-  document.getElementById('metservice-widget').appendChild(ifrm);
-  </script>
-  </div>
+
   <br>
           <div class='map_legend' style='background:#877348; border: 1.5px solid #d2cbc0;
           border-radius: 3px; padding: 10px; width: 300px;'>
@@ -902,8 +888,19 @@ map.on('mouseleave', 'DOC Campsites', function() {
       });
       </script>
           </div>
-
-
+<br>
+          <div id="metservice-widget">
+          <script language="JavaScript" type="text/javascript">
+          ifrm = document.createElement("IFRAME");
+          ifrm.setAttribute("src", "http://www.metservice.com/weather-widget/widget?params=blue|medium|portrait|days-3|classic&loc=Taupo&domain=" + document.location.hostname);
+          ifrm.style.width = 300+"px";
+          ifrm.style.height =199+"px";
+          ifrm.style.border = "0";
+          ifrm.setAttribute("allowtransparency", "true");
+          ifrm.setAttribute("id", "widget-iframe");
+          document.getElementById('metservice-widget').appendChild(ifrm);
+          </script>
+          </div>
   </div>
 
 
