@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="../main.css">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
-    <title>Project</title>
+    <title>Lab 3</title>
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.40.1/mapbox-gl.css' rel='stylesheet' />
     <style>
@@ -58,7 +58,7 @@
         background: rgba(210, 203, 192, 0.7);
         position: absolute;
         z-index: 1;
-        top: 30px;
+        top: 10px;
         right: 10px;
         border-radius: 3px;
         width: 120px;
@@ -128,7 +128,7 @@
 
     <div class="container">
       <h1>Final Project - "The NZ Hunter's Map"</h1>
-      <p>The map below shows two popular hunting blocks in North Island of New Zealand. Click one of the buttons below the legend to zoom in on a hunting area. Upon zooming in, slope aspect information for the block will appear. Slope aspect displays the orientation of each slope face (refer to the legend), allowing you to make an educated prediction as to where game may be residing depending on their daily movements relative to the position of the sun and weather conditions. To show more details of a particular hunting block, hover over the little tree symbol.
+      <p>The map below shows two popular hunting blocks in North Island of New Zealand. Click one of the buttons below the legend to zoom in on a hunting area. Upon zooming in, slope aspect information for the block will appear. Slope aspect displays the orientation of each slope face (refer to the legend), allowing you to make an educated prediction as to where game may be residing depending on their daily movements relative to the position of the sun and weather conditions. Make use of the slide bar to compare the aspect layer with satelite imagery. To show more details of a particular hunting block, hover over the little tree symbol.
         <br><br>After zooming to a hunting block, the buttons on the map allow you to turn off/on some layers. You can hover over a campsite or hut to reveal its name.
         <br><br>Clicking on the map will allow you to draw a path or line, the length of which will be displayed in the top left of the map. To undo a point, click on the point you wish to remove. This is a handy tool for working out the distance you may need to walk or shoot.
         <br><br>Use the MetService Weather Widgets to help you better plan your trip (you may need to "load unsafe scripts" via the URL bar to view this). Click on the widget to visit the MetService website for a more detailed forecast.
@@ -140,7 +140,10 @@
 
       <div class="container">
 <div class="row">
-
+<div class="row">
+  <div class="col-sm-6" id='info2'style='width: 75%; height: 20px;'>
+<div id='info'></div>
+</div></div>
           <div class="col-sm-6" id='map'style='width: 70%; height: 710px;'>
 
 
@@ -165,7 +168,7 @@
           <style>
           .distance-container {
               position: absolute;
-              top: 30px;
+              top: 10px;
               left: 20px;
               z-index: 1;
           }
@@ -189,26 +192,52 @@
           }
           </style>
 
+          <style>
 
 
+          .map {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+          }
+          </style>
+          <div id='before' class='map'></div>
+          <div id='after' class='map'></div>
             <nav id="menu"></nav>
-            <div id="map"></div>
+
+
             <div id='distance' class='distance-container'></div>
-            <div id='info'></div>
+
 
 <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v2.0.2/turf.min.js'></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
+
             <script>
               mapboxgl.accessToken = 'pk.eyJ1Ijoid21hcjEwMyIsImEiOiJjajY4emJoZmowazBpMndxcjFtZjNzcWc5In0.DP_eav3mOX6CgiZu2UvO-g';
-                var map = new mapboxgl.Map({
-                  container: 'map',
+
+
+              var beforeMap = new mapboxgl.Map({
+  container: 'before',
                   style: 'mapbox://styles/wmar103/cj90ocks7j0sg2rnzserdjfd1',
                   center:[175.7,-38.5],
                   zoom: 5.7,
                 });
 
+                var afterMap = new mapboxgl.Map({
+                    container: 'after',
+                    style: 'mapbox://styles/wmar103/cj96mfp0n5ihi2rmr404t83m5',
+                    center: [175.7,-38.5],
+                    zoom: 5.7,
+                });
 
+                var map = new mapboxgl.Compare(beforeMap, afterMap, {
+                    // Set this to enable comparing two maps by mouse movement:
+                    // mousemove: true
+                });
 
-                map.on('mousemove', function (e) {
+                beforeMap.on('mousemove', function (e) {
                     document.getElementById('info').innerHTML =
                         // e.lngLat is the longitude, latitude geographical position of the event
                         JSON.stringify(e.lngLat);
@@ -231,24 +260,24 @@
                     }
                 };
 
-                map.on('load', function() {
-                    map.addSource('geojson', {
+                beforeMap.on('load', function() {
+                    beforeMap.addSource('geojson', {
                         "type": "geojson",
                         "data": geojson
                     });
 
                     // Add styles to the map
-                    map.addLayer({
+                    beforeMap.addLayer({
                         id: 'measure-points',
                         type: 'circle',
                         source: 'geojson',
                         paint: {
                             'circle-radius': 5,
-                            'circle-color': '#000'
+                            'circle-color': '#ff00c4'
                         },
                         filter: ['in', '$type', 'Point']
                     });
-                    map.addLayer({
+                    beforeMap.addLayer({
                         id: 'measure-lines',
                         type: 'line',
                         source: 'geojson',
@@ -257,14 +286,14 @@
                             'line-join': 'round'
                         },
                         paint: {
-                            'line-color': '#000',
+                            'line-color': '#ff00c4',
                             'line-width': 2.5
                         },
                         filter: ['in', '$type', 'LineString']
                     });
 
-                    map.on('click', function(e) {
-                        var features = map.queryRenderedFeatures(e.point, { layers: ['measure-points'] });
+                    beforeMap.on('click', function(e) {
+                        var features = beforeMap.queryRenderedFeatures(e.point, { layers: ['measure-points'] });
 
                         // Remove the linestring from the group
                         // So we can redraw it based on the points collection
@@ -310,24 +339,639 @@
                             distanceContainer.appendChild(value);
                         }
 
-                        map.getSource('geojson').setData(geojson);
+                        beforeMap.getSource('geojson').setData(geojson);
                     });
                 });
 
-                map.on('mousemove', function (e) {
-                    var features = map.queryRenderedFeatures(e.point, { layers: ['measure-points'] });
+                beforeMap.on('mousemove', function (e) {
+                    var features = beforeMap.queryRenderedFeatures(e.point, { layers: ['measure-points'] });
                     // UI indicator for clicking/hovering a point on the map
-                    map.getCanvas().style.cursor = (features.length) ? 'pointer' : 'crosshair';
+                    beforeMap.getCanvas().style.cursor = (features.length) ? 'pointer' : 'crosshair';
+                });
+
+                //end of distance tool
+
+                beforeMap.on('load', function () {
+                  beforeMap.addSource('DOC Tracks',{
+                    type:'vector',
+                    url:'mapbox://wmar103.cj96vvug100n432n36uagih5p-6yb6t'
+                    });
+                beforeMap.addLayer({
+                  "id":"DOC Tracks",
+                  "type":"line",
+                  "source":"DOC Tracks",
+                  "source-layer":"hunting_doc_tracks",
+                  "layout":{
+                    "visibility":"visible",
+                    "line-join":"round",
+                    "line-cap":"round"
+                  },
+                  "paint":{
+                    "line-color":"#ff0000",
+                    "line-width":2
+                  }
+                });
+
+
+
+
+
+
+                //HUTS
+                beforeMap.addLayer({
+                "id": "DOC Huts",
+                "type": "symbol",
+                "source": {
+                "type": "geojson",
+                "data": {
+                "type": "FeatureCollection",
+                "features": [{
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  176.11167506244018,
+                  -39.05795105728087
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Cascade Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Standard Hut"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  176.26481128143067,
+                  -39.075434264066224
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Oamaru Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Standard Hut"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  175.95825984194522,
+                  -39.123882197373575
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Waipakihi Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Standard Hut"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.80628832039457,
+                -37.52624516123427
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Waitawheta Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Serviced Hut"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.76299137342212,
+                -37.484582076081615
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Daly's Clearing Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Standard Hut"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.8306815341054,
+                -37.586052480857084
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Te Rereatukahia Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Standard Hut"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.86119255512648,
+                -37.66508700341928
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Kauritatahi Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Basic Hut/bivvy"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.89566817004848,
+                -37.788102016043744
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Mangamuka Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Basic Hut/bivvy"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.92839279546172,
+                -37.81750390833001
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Hurunui Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Basic Hut/bivvy"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.84075754721803,
+                -37.62202404519294
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Motutapere Hut",
+                "CATEGORY_D": "Buildings",
+                "OBJECT_TYP": "Basic Hut/bivvy"
+                }
+                }
+                ]
+                }
+                },
+                "layout": {
+                "icon-image": "lodging-15",
+                "icon-allow-overlap": true
+                }
+                });
+
+
+
+                // Create a popup, but don't add it to the map yet.
+                var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+                });
+
+                beforeMap.on('mouseenter', 'DOC Huts', function(e) {
+                // Change the cursor style as a UI indicator.
+                beforeMap.getCanvas().style.cursor = 'pointer';
+
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup.setLngLat(e.features[0].geometry.coordinates)
+                .setHTML(e.features[0].properties.DESCRIPTIO)
+                .addTo(beforeMap);
+                });
+                beforeMap.on('mouseleave', 'DOC Huts', function() {
+                beforeMap.getCanvas().style.cursor = '';
+                popup.remove();
+                });
+
+                //HUTS END
+
+                //CAMPSITES
+
+                // Add a layer showing DOC Campsites(for the popup).
+                beforeMap.addLayer({
+                "id": "DOC Campsites",
+                "type": "symbol",
+                "source": {
+                "type": "geojson",
+                "data": {
+                "type": "FeatureCollection",
+                "features": [{
+                "type": "Feature",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        175.82306576428064,
+                        -39.15418314809367
+                      ]
+                    },
+                    "properties": {
+                      "STATUS": "OPEN",
+                      "DESCRIPTIO": "Urchin Campsite",
+                      "CATEGORY_D": "Amenity Areas",
+                      "OBJECT_TYP": "Basic campsite"
+                    }
+                  },
+                  {
+                    "type": "Feature",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        175.82617529795698,
+                        -39.1373421875887
+                      ]
+                    },
+                    "properties": {
+                      "STATUS": "OPEN",
+                      "DESCRIPTIO": "Kaimanawa Road Campsite",
+                      "CATEGORY_D": "Amenity Areas",
+                      "OBJECT_TYP": "Basic campsite"
+                    }
+                  },
+                  {
+                    "type": "Feature",
+                    "geometry": {
+                      "type": "Point",
+                      "coordinates": [
+                        175.830478737388,
+                        -39.13705750238595
+                      ]
+                    },
+                    "properties": {
+                      "STATUS": "OPEN",
+                      "DESCRIPTIO": "Waikoko valley campsite",
+                      "CATEGORY_D": "Amenity Areas",
+                      "OBJECT_TYP": "Basic campsite"
+                }
+                },
+                {
+                "type": "Feature",
+                "geometry": {
+                "type": "Point",
+                "coordinates": [
+                175.7472348253124,
+                -37.438137602133786
+                ]
+                },
+                "properties": {
+                "STATUS": "OPEN",
+                "DESCRIPTIO": "Dickey Flat Campsite",
+                "CATEGORY_D": "Amenity Areas",
+                "OBJECT_TYP": "Standard campsite"
+                }
+                }
+                ]
+                }
+                },
+                "layout": {
+                "icon-image": "campsite-15",
+                "icon-allow-overlap": true
+                }
+                });
+
+
+
+                // Create a popup, but don't add it to the map yet.
+                var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+                });
+
+                beforeMap.on('mouseenter', 'DOC Campsites', function(e) {
+                // Change the cursor style as a UI indicator.
+                beforeMap.getCanvas().style.cursor = 'pointer';
+
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup.setLngLat(e.features[0].geometry.coordinates)
+                .setHTML(e.features[0].properties.DESCRIPTIO)
+                .addTo(beforeMap);
+                });
+                beforeMap.on('mouseleave', 'DOC Campsites', function() {
+                beforeMap.getCanvas().style.cursor = '';
+                popup.remove();
+                });
+
+
+
+                //CAMPSITES END
+
+                //MARKERS & PLACES
+
+
+
+                // Add a layer showing places(for the popup) & markers.
+                beforeMap.addLayer({
+                "id": "beforePlaces",
+                "type": "symbol",
+                "source": {
+                "type": "geojson",
+                "data": {
+                "type": "FeatureCollection",
+                "features": [
+                  {
+                    "type": "Feature",
+                    "properties": {
+                        "title": "Kaimanawa Forest Park",
+                        "description": "<strong>Kaimanawa Forest Park</strong><h2><a href=\"http://www.doc.govt.nz/parks-and-recreation/things-to-do/hunting/where-to-hunt/central-north-island/turangi-taupo-hunting/where-to-hunt/kaimanawa-forest-park-hunting/\" target=\"_blank\" title=\"Opens in a new window\">Kaimanawa Forest Park</a> is home to the only large wild herd of sika deer in the southern hemisphere, as well as red deer and pigs. This is one of the most popular hunting areas in New Zealand. Permits can be obtained <a href=\"https://huntingpermits.doc.govt.nz/huntingpermits/start\" target=\"_blank\" title=\"Opens in a new window\">here.</a></h2>",
+                        "icon": ""
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [176.065, -39.1]
+                    }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                      "title": "Kaimai Mamaku Conservation Park",
+                      "description": "<strong>Kaimai Mamaku Conservation Park</strong><h2><a href=\"http://www.doc.govt.nz/parks-and-recreation/things-to-do/hunting/where-to-hunt/bay-of-plenty/tauranga-area-hunting/where-to-hunt/kaimai-mamaku-forest-park/?region=bayofplenty&activity=hunting#activitypanel\" target=\"_blank\" title=\"Opens in a new window\">Kaimai Mamaku Conservation Park</a> is a popular hunting area in the Bay of Plenty, where hunters can find red deer, pigs and goats. Permits can be obtained <a href=\"https://huntingpermits.doc.govt.nz/huntingpermits/start\" target=\"_blank\" title=\"Opens in a new window\">here.</a></h2>",
+                      "icon": ""
+                  },
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [175.9, -37.74]
+                  }
+                },
+                 ]
+                }
+                },
+                "layout": {
+                "icon-image": "park-15",
+                "icon-allow-overlap": true
+                }
+                });
+
+                beforeMap.addLayer({
+                "id": "beforeMarkers",
+                "type": "symbol",
+                "source": {
+                "type": "geojson",
+                "data": {
+                "type": "FeatureCollection",
+                "features": [
+                  {
+                    "type": "Feature",
+                    "properties": {
+                        "title": "Kaimanawa Forest Park",
+                        "icon": ""
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [176.065, -39.1]
+                    }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                      "title": "Kaimai Mamaku Conservation Park",
+                      "icon": ""
+                  },
+                  "geometry": {
+                      "type": "Point",
+                      "coordinates": [175.9, -37.74]
+                  }
+                },
+                 ]
+                }
+                },
+                "layout": {
+                "icon-image": "park-15",
+                "icon-allow-overlap": true
+                }
+                });
+
+                beforeMap.addLayer({
+                "id":"beforeMarkers",
+                "type":"symbol",
+                "source":"beforeMarkers",
+                "layout":{
+                "icon-image":"",
+                "text-field": "{title}",
+                "text-font":["Open Sans Condensed Bold","Arial Unicode MS Regular"],
+                "text-offset":[0,0.9],
+                "text-size":14,
+                "text-anchor":"top",
+                "text-allow-overlap": true
+
+
+                },
+                "paint": {
+                "text-color":"#e9ad08",
+                "text-halo-color":"#000000",
+                "text-halo-width": 0,
+                "text-halo-blur": 0
+                }
+                });
+
+                // Create a popup, but don't add it to the map yet.
+                var popup = new mapboxgl.Popup({
+                closeButton: true,
+                closeOnClick: false
+                });
+
+                beforeMap.on('mouseenter', 'beforePlaces', function(e) {
+                // Change the cursor style as a UI indicator.
+                beforeMap.getCanvas().style.cursor = 'pointer';
+
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup.setLngLat(e.features[0].geometry.coordinates)
+                .setHTML(e.features[0].properties.description)
+                .addTo(beforeMap);
+                });
+
+
+
+
+
+                //MARKERS & PLACES END
+
+
+
+
+
+
+
+
+
+                beforeMap.setLayerZoomRange('DOC Campsites',9,0);
+                beforeMap.setLayerZoomRange('DOC Huts',9,0);
+                beforeMap.setLayerZoomRange('DOC Tracks',8,0);
+
+                });
+
+
+
+//END OF BEFORE MAP
+
+
+
+
+
+
+
+
+//START OF AFTER MAP
+
+
+
+
+
+
+                afterMap.on('mousemove', function (e) {
+                    document.getElementById('info').innerHTML =
+                        // e.lngLat is the longitude, latitude geographical position of the event
+                        JSON.stringify(e.lngLat);
+                });
+
+                var distanceContainer = document.getElementById('distance');
+
+                // GeoJSON object to hold our measurement features
+                var geojson = {
+                    "type": "FeatureCollection",
+                    "features": []
+                };
+
+                // Used to draw a line between points
+                var linestring = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": []
+                    }
+                };
+
+                afterMap.on('load', function() {
+                    afterMap.addSource('geojson', {
+                        "type": "geojson",
+                        "data": geojson
+                    });
+
+                    // Add styles to the map
+                    afterMap.addLayer({
+                        id: 'measure-points',
+                        type: 'circle',
+                        source: 'geojson',
+                        paint: {
+                            'circle-radius': 5,
+                            'circle-color': '#ff00c4'
+                        },
+                        filter: ['in', '$type', 'Point']
+                    });
+                    afterMap.addLayer({
+                        id: 'measure-lines',
+                        type: 'line',
+                        source: 'geojson',
+                        layout: {
+                            'line-cap': 'round',
+                            'line-join': 'round'
+                        },
+                        paint: {
+                            'line-color': '#ff00c4',
+                            'line-width': 2.5
+                        },
+                        filter: ['in', '$type', 'LineString']
+                    });
+
+                    afterMap.on('click', function(e) {
+                        var features = afterMap.queryRenderedFeatures(e.point, { layers: ['measure-points'] });
+
+                        // Remove the linestring from the group
+                        // So we can redraw it based on the points collection
+                        if (geojson.features.length > 1) geojson.features.pop();
+
+                        // Clear the Distance container to populate it with a new value
+                        distanceContainer.innerHTML = '';
+
+                        // If a feature was clicked, remove it from the map
+                        if (features.length) {
+                            var id = features[0].properties.id;
+                            geojson.features = geojson.features.filter(function(point) {
+                                return point.properties.id !== id;
+                            });
+                        } else {
+                            var point = {
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [
+                                        e.lngLat.lng,
+                                        e.lngLat.lat
+                                    ]
+                                },
+                                "properties": {
+                                    "id": String(new Date().getTime())
+                                }
+                            };
+
+                            geojson.features.push(point);
+                        }
+
+                        if (geojson.features.length > 1) {
+                            linestring.geometry.coordinates = geojson.features.map(function(point) {
+                                return point.geometry.coordinates;
+                            });
+
+                            geojson.features.push(linestring);
+
+                            // Populate the distanceContainer with total distance
+                            var value = document.createElement('pre');
+                            value.textContent = 'Total distance: ' + turf.lineDistance(linestring).toLocaleString() + 'km';
+                            distanceContainer.appendChild(value);
+                        }
+
+                        afterMap.getSource('geojson').setData(geojson);
+                    });
+                });
+
+                afterMap.on('mousemove', function (e) {
+                    var features = afterMap.queryRenderedFeatures(e.point, { layers: ['measure-points'] });
+                    // UI indicator for clicking/hovering a point on the map
+                    afterMap.getCanvas().style.cursor = (features.length) ? 'pointer' : 'crosshair';
                 });
 
 //end of distance tool
 
-                map.on('load', function () {
-                  map.addSource('DOC Tracks',{
+                afterMap.on('load', function () {
+                  afterMap.addSource('DOC Tracks',{
                     type:'vector',
                     url:'mapbox://wmar103.cj96vvug100n432n36uagih5p-6yb6t'
                     });
-                map.addLayer({
+                afterMap.addLayer({
                   "id":"DOC Tracks",
                   "type":"line",
                   "source":"DOC Tracks",
@@ -361,14 +1005,17 @@
                         e.preventDefault();
                         e.stopPropagation();
 
-                        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+                        var visibility = afterMap.getLayoutProperty(clickedLayer, 'visibility');
+                        beforeMap.getLayoutProperty(clickedLayer, 'visibility');
 
                         if (visibility === 'visible') {
-                            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                            beforeMap.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                            afterMap.setLayoutProperty(clickedLayer, 'visibility', 'none');
                             this.className = '';
                         } else {
                             this.className = 'active';
-                            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                            beforeMap.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                            afterMap.setLayoutProperty(clickedLayer, 'visibility', 'visible');
                         }
                     };
 
@@ -377,7 +1024,7 @@
                 }
 
 //HUTS
-map.addLayer({
+afterMap.addLayer({
     "id": "DOC Huts",
     "type": "symbol",
     "source": {
@@ -561,18 +1208,18 @@ var popup = new mapboxgl.Popup({
     closeOnClick: false
 });
 
-map.on('mouseenter', 'DOC Huts', function(e) {
+afterMap.on('mouseenter', 'DOC Huts', function(e) {
     // Change the cursor style as a UI indicator.
-    map.getCanvas().style.cursor = 'pointer';
+    afterMap.getCanvas().style.cursor = 'pointer';
 
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(e.features[0].geometry.coordinates)
         .setHTML(e.features[0].properties.DESCRIPTIO)
-        .addTo(map);
+        .addTo(afterMap);
 });
-map.on('mouseleave', 'DOC Huts', function() {
-    map.getCanvas().style.cursor = '';
+afterMap.on('mouseleave', 'DOC Huts', function() {
+    afterMap.getCanvas().style.cursor = '';
     popup.remove();
 });
 
@@ -581,7 +1228,7 @@ map.on('mouseleave', 'DOC Huts', function() {
 //CAMPSITES
 
 // Add a layer showing DOC Campsites(for the popup).
-map.addLayer({
+afterMap.addLayer({
     "id": "DOC Campsites",
     "type": "symbol",
     "source": {
@@ -669,18 +1316,18 @@ var popup = new mapboxgl.Popup({
     closeOnClick: false
 });
 
-map.on('mouseenter', 'DOC Campsites', function(e) {
+afterMap.on('mouseenter', 'DOC Campsites', function(e) {
     // Change the cursor style as a UI indicator.
-    map.getCanvas().style.cursor = 'pointer';
+    afterMap.getCanvas().style.cursor = 'pointer';
 
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(e.features[0].geometry.coordinates)
         .setHTML(e.features[0].properties.DESCRIPTIO)
-        .addTo(map);
+        .addTo(afterMap);
 });
-map.on('mouseleave', 'DOC Campsites', function() {
-    map.getCanvas().style.cursor = '';
+afterMap.on('mouseleave', 'DOC Campsites', function() {
+    afterMap.getCanvas().style.cursor = '';
     popup.remove();
 });
 
@@ -693,7 +1340,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
 
 
     // Add a layer showing places(for the popup) & markers.
-    map.addLayer({
+    afterMap.addLayer({
         "id": "places",
         "type": "symbol",
         "source": {
@@ -734,7 +1381,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
         }
     });
 
-    map.addLayer({
+    afterMap.addLayer({
         "id": "markers",
         "type": "symbol",
         "source": {
@@ -773,7 +1420,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
         }
     });
 
-    map.addLayer({
+    afterMap.addLayer({
           "id":"markers",
           "type":"symbol",
           "source":"markers",
@@ -789,7 +1436,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
 
           },
           "paint": {
-            "text-color":"#332c23",
+            "text-color":"#e9ad08",
             "text-halo-color":"#000000",
             "text-halo-width": 0,
             "text-halo-blur": 0
@@ -802,15 +1449,15 @@ map.on('mouseleave', 'DOC Campsites', function() {
         closeOnClick: false
     });
 
-    map.on('mouseenter', 'places', function(e) {
+    afterMap.on('mouseenter', 'places', function(e) {
         // Change the cursor style as a UI indicator.
-        map.getCanvas().style.cursor = 'pointer';
+        afterMap.getCanvas().style.cursor = 'pointer';
 
         // Populate the popup and set its coordinates
         // based on the feature found.
         popup.setLngLat(e.features[0].geometry.coordinates)
             .setHTML(e.features[0].properties.description)
-            .addTo(map);
+            .addTo(afterMap);
     });
 
 
@@ -827,9 +1474,9 @@ map.on('mouseleave', 'DOC Campsites', function() {
 
 
 
-  map.setLayerZoomRange('DOC Campsites',9,0);
-  map.setLayerZoomRange('DOC Huts',9,0);
-  map.setLayerZoomRange('DOC Tracks',8,0);
+  afterMap.setLayerZoomRange('DOC Campsites',9,0);
+  afterMap.setLayerZoomRange('DOC Huts',9,0);
+  afterMap.setLayerZoomRange('DOC Tracks',8,0);
 
 });
 
@@ -871,7 +1518,7 @@ map.on('mouseleave', 'DOC Campsites', function() {
       <script>
       document.getElementById('reset_extent').addEventListener('click', function () {
 
-      map.flyTo({
+      afterMap.flyTo({
         center:[175.7,-38.5],
         zoom: 5.7,
       });
@@ -879,14 +1526,14 @@ map.on('mouseleave', 'DOC Campsites', function() {
 
       document.getElementById('fly_kaimanawas').addEventListener('click', function () {
 
-      map.flyTo({
+      afterMap.flyTo({
       center: [176.065,-39.1],
       zoom: 9.7,
       });
       });
       document.getElementById('fly_kaimais').addEventListener('click', function () {
 
-      map.flyTo({
+      afterMap.flyTo({
       center: [175.9, -37.74],
       zoom: 9.2,
       });
